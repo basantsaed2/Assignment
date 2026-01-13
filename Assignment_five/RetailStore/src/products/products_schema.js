@@ -14,7 +14,7 @@ const ProductSchema = {
             ProductName VARCHAR(255) NOT NULL,
             Price DECIMAL(10, 2) NOT NULL,
             StockQuantity INT DEFAULT 0,
-            SupplierID INT,
+            SupplierID INT NULL,
             FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
         )`
 };

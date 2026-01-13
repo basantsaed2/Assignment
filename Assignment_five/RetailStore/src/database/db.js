@@ -1,6 +1,7 @@
 const mysql = require("mysql2");
 const ProductSchema = require("../products/products_schema");
 const SupplierSchema = require("../suppliers/suppliers_schema");
+const SalesSchema = require("../sales/sales_schema");
 
 // Connect to MySQL server (not to a specific DB yet)
 const connection = mysql.createConnection({
@@ -27,6 +28,11 @@ connection.query("CREATE DATABASE IF NOT EXISTS retail_store", (err) => {
             connection.query(ProductSchema.createTable, (err) => {
                 if (err) throw err;
                 console.log("Products table ready");
+            });
+
+            connection.query(SalesSchema.createTable, (err) => {
+                if (err) throw err;
+                console.log("Sales table ready");
             });
         });
     });
