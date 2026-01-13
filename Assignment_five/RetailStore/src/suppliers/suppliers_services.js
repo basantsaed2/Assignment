@@ -16,7 +16,7 @@ const getAllSuppliers = (req, res) => {
 
 const createSupplier = (req, res) => {
     const { name, contact } = req.body;
-    const query = `INSERT INTO ${SupplierSchema.tableName} (${SupplierSchema.attributes.name}, ${SupplierSchema.attributes.contactNumber}) VALUES (${name}, ${contact})`;
+    const query = `INSERT INTO ${SupplierSchema.tableName} (${SupplierSchema.attributes.name}, ${SupplierSchema.attributes.contactNumber}) VALUES ('${name}', '${contact}')`;
 
     db.query(query, (err, results) => {
         if (err) {

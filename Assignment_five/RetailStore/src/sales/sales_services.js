@@ -15,14 +15,14 @@ const getAllSales = (req, res) => {
 
 const createSale = (req, res) => {
     const { productId, quantity, saleDate } = req.body;
-    const query = `INSERT INTO ${SalesSchema.tableName} (${SalesSchema.attributes.productId}, ${SalesSchema.attributes.quantity}, ${SalesSchema.attributes.saleDate}) VALUES (?, ?, ?)`;
+    const query = `INSERT INTO ${SalesSchema.tableName} (${SalesSchema.attributes.productId}, ${SalesSchema.attributes.quantity}, ${SalesSchema.attributes.saleDate}) VALUES ('${productId}', '${quantity}', '${saleDate}')`;
 
-    db.query(query, [productId, quantity, saleDate], (err, results) => {
+    db.query(query, (err, results) => {
         if (err) {
             console.error("Error creating sale:", err);
             res.status(500).json({ error: "Failed to create sale" });
         } else {
-            res.status(201).json({ message: "Sale created successfully", id: results.insertId });
+            res.status(201).json({ message: "Sale created successfully" });
         }
     });
 };
@@ -31,8 +31,8 @@ const updateSale = (req, res) => {
     const { id } = req.params;
     const { productId, quantity, saleDate } = req.body;
 
-    const query = `UPDATE ${SalesSchema.tableName} SET ${SalesSchema.attributes.productId} = ?, ${SalesSchema.attributes.quantity} = ?, ${SalesSchema.attributes.saleDate} = ? WHERE ${SalesSchema.attributes.id} = ?`;
-    db.query(query, [productId, quantity, saleDate, id], (err, results) => {
+    const query = `UPDATE ${SalesSchema.tableName} SET ${SalesSchema.attributes.productId} = '${productId}', ${SalesSchema.attributes.quantity} = '${quantity}', ${SalesSchema.attributes.saleDate} = '${saleDate}' WHERE ${SalesSchema.attributes.id} = ${id}`;
+    db.query(query, (err, results) => {
         if (err) {
             console.error("Error updating sale:", err);
             res.status(500).json({ error: "Failed to update sale" });
@@ -45,8 +45,8 @@ const updateSale = (req, res) => {
 const deleteSale = (req, res) => {
     const { id } = req.params;
 
-    const query = `DELETE FROM ${SalesSchema.tableName} WHERE ${SalesSchema.attributes.id} = ?`;
-    db.query(query, [id], (err, results) => {
+    const query = `DELETE FROM ${SalesSchema.tableName} WHERE ${SalesSchema.attributes.id} = ${id}`;
+    db.query(query, (err, results) => {
         if (err) {
             console.error("Error deleting sale:", err);
             res.status(500).json({ error: "Failed to delete sale" });
