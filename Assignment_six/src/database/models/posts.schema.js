@@ -1,5 +1,5 @@
 import { DataTypes , Module } from "sequelize";
-import { sequelize } from "../../database/connection";
+import { sequelize } from "../connection";
 
 export class Post extends Module {}
 

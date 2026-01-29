@@ -1,8 +1,6 @@
 import { Sequelize } from 'sequelize';
 import mysql from "mysql2/promise"; // 1. Use mysql2/promise for await support
-import { database_name , database_password , database_user , database_host } from '../../config/env.service.js';
-
-console.log('Database Name:', database_name);
+import { database_name , database_password , database_user , database_host } from '../config/env.service.js';
 
 export const sequelize = new Sequelize(database_name, database_user, database_password, {
     host: database_host,
@@ -36,7 +34,7 @@ export const connectToDatabase = async () => {
 export const databaseSync = async () => {
   try {
     // This will create the tables based on your models
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     console.log("Models synchronized successfully.");
   } catch (error) {
     console.error("Error synchronizing models:", error);
