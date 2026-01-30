@@ -1,7 +1,7 @@
-import { DataTypes, Module } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../connection";
 
-export class Comment extends Module {}
+export class Comment extends Model {}
 
 Comment.init(
   {

@@ -1,7 +1,7 @@
-import { DataTypes , Module } from "sequelize";
-import { sequelize } from "../connection";
+import { DataTypes , Model } from "sequelize";
+import { sequelize } from "../connection.js";
 
-export class Post extends Module {}
+export class Post extends Model {}
 
 Post.init({
    id: {
@@ -25,5 +25,5 @@ Post.init({
     sequelize, 
     modelName: 'posts',
     timestamps: true,
-    paranoid: true // 1. تفعيل الـ Soft Delete
+    paranoid: true 
 })
