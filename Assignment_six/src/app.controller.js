@@ -3,6 +3,7 @@ import { connectToDatabase, databaseSync } from "./database/connection.js";
 import { usersRouter } from "./modules/users/users.controller.js";
 import { postsRouter } from "./modules/posts/posts.controller.js";
 import { commentsRouter } from "./modules/comments/comments.controller.js";
+import './database/relations/relations.js'
 
 export const bootstrap = () => {
   const app = express();

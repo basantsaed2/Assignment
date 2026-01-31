@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { createPost, deletePost, getAllPosts , getPostsWithDetails } from "./posts.services.js";
+import {
+  createPost,
+  deletePost,
+  getAllPosts,
+  getPostsWithDetails,
+  getPostsCommentsCount,
+} from "./posts.services.js";
 
 const postsRouter = Router();
 
@@ -26,6 +32,11 @@ postsRouter.delete("/:id", async (req, res) => {
 
 postsRouter.get("/details", async (req, res) => {
   const postData = await getPostsWithDetails();
+  return res.status(postData.status).json(postData);
+});
+
+postsRouter.get("/comment-count", async (req, res) => {
+  const postData = await getPostsCommentsCount();
   return res.status(postData.status).json(postData);
 });
 

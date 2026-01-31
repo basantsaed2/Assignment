@@ -34,7 +34,7 @@ export const connectToDatabase = async () => {
 export const databaseSync = async () => {
   try {
     // This will create the tables based on your models
-    await sequelize.sync({ alter: true });
+    await sequelize.sync();
     console.log("Models synchronized successfully.");
   } catch (error) {
     console.error("Error synchronizing models:", error);

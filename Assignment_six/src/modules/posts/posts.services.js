@@ -1,3 +1,4 @@
+import { sequelize } from "../../database/connection.js";
 import { Comment } from "../../database/models/comments.schema.js";
 import { Post } from "../../database/models/posts.schema.js";
 import { User } from "../../database/models/users.schema.js";
@@ -44,7 +45,7 @@ const deletePost = async (userId, postId) => {
 const getAllPosts = async () => {
   try {
     const posts = await Post.findAll();
-    return { status: 200, posts : posts };
+    return { status: 200, posts: posts };
   } catch (error) {
     return { status: 400, message: error.message };
   }
@@ -53,16 +54,45 @@ const getAllPosts = async () => {
 const getPostsWithDetails = async () => {
   try {
     const posts = await Post.findAll({
-     attributes : ["id" , "title"],
+      attributes: ["id", "title"],
       include: [
-        { model: User , attributes : ["id" , "name"]},
-        { model: Comment , attributes : ["id" , "content"]}
-      ]
+        { model: User, attributes: ["id", "name"] },
+        { model: Comment, attributes: ["id", "content"] },
+      ],
     });
-    return { status: 200, posts : posts };
+    return { status: 200, posts: posts };
   } catch (error) {
     return { status: 400, message: error.message };
   }
 };
 
-export { createPost, deletePost, getAllPosts , getPostsWithDetails};
+const getPostsCommentsCount = async () => {
+  try {
+    const getAllPosts = await Post.findAll({
+      attributes: [
+        "id",
+        "title",
+        [sequelize.fn("COUNT", sequelize.col('comments.id')), "countComments"],
+      ],
+      include: [
+        {
+          model: Comment,
+          attributes: [],
+        },
+      ],
+      group: ["posts.id"],
+    });
+
+    return { status: 200, posts: getAllPosts };
+  } catch (error) {
+    return { status: 400, message: error.message };
+  }
+};
+
+export {
+  createPost,
+  deletePost,
+  getAllPosts,
+  getPostsWithDetails,
+  getPostsCommentsCount,
+};
