@@ -1,3 +1,4 @@
+import { Comment } from "../../database/models/comments.schema.js";
 import { Post } from "../../database/models/posts.schema.js";
 import { User } from "../../database/models/users.schema.js";
 
