@@ -12,7 +12,6 @@ export const bootstrap = () => {
   connectToDatabase();
   databaseSync();
 
-  // Import and use routers
   app.use("/users", usersRouter);
   app.use("/posts", postsRouter);
   app.use("/comments", commentsRouter)

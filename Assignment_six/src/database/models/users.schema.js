@@ -33,8 +33,7 @@ export const User = sequelize.define("users", {
         defaultValue: 'user'
     }
 }, {
-    timestamps: true ,// This automatically handles createdAt and updatedAt
-    // 3. Hook للـ Name Length
+    timestamps: true ,
     hooks: {
         beforeCreate: (users) => {
             if (users.name && users.name.length <= 2) {

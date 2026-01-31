@@ -26,6 +26,6 @@ Comment.init(
     sequelize,
     modelName: "comments",
     timestamps: true,
-    paranoid: true, // 1. تفعيل الـ Soft Delete
+    paranoid: true, 
   },
 );

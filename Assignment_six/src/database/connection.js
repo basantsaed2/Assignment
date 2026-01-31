@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import mysql from "mysql2/promise"; // 1. Use mysql2/promise for await support
+import mysql from "mysql2/promise";
 import { database_name , database_password , database_user , database_host } from '../config/env.service.js';
 
 export const sequelize = new Sequelize(database_name, database_user, database_password, {
