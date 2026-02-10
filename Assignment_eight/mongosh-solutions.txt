@@ -1,0 +1,109 @@
+
+mongosh
+
+use assignment_eight
+
+db.createCollection("books", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: ["title"],
+         properties: {
+            title: {
+               bsonType: "string",
+               minLength: 1
+            }
+         }
+      }
+   }
+});
+
+
+db.createCollection("logs", { 
+   capped: true, 
+   size: 1048576 
+});
+
+db.books.createIndex({title :  1 })
+
+db.books.insertMany([
+  {
+    title: "Future",
+    author: "Geroge orwell",
+    genres: ["science fiction"],
+    year: 2020
+  },
+  {
+    title: "To kill a mockingbrind",
+    author: "Harper lee",
+    genres: ["classic" , "Fiction"],
+    year: 1960
+  },
+  {
+    title: "Brave New World",
+    author: "Aldous",
+    genres: ["Dystopian", "Science Fiction"],
+    year: 2006
+  }
+]);
+
+db.logs.insertOne({ book_id : ObjectId("698aaee93dc1bdb7b7628ca6") , action : "borrowed" })
+
+db.books.updateOne({title : "Future"} , {$set :{year : 2022}})
+
+db.books.findOne({title : "Brave New World"})
+
+db.books.find({year : {$gte :1990 , $lte : 2010 }})
+
+db.books.find({genres : "Science Fiction"})
+db.books.find({
+    genres:{
+      $regex: "science fiction",
+      $options: "i"
+    }
+  })
+
+db.books.find().sort({ year: -1 }).skip(2).limit(3);
+
+db.books.find({ year : {$type : "int"}})
+
+db.books.find({genres : {$nin : ["Horror" , "Science Fiction"]}})
+db.books.find({genres : {$nin : [/^Horror$/i , /^Science Fiction$/i]}})
+
+db.books.deleteMany({year : {$lte : 2000}})
+
+db.books.aggregate([
+  { 
+    $match: { year: { $gt: 2000 } } 
+  },
+  { 
+    $sort: { year: -1 } 
+  }
+]);
+
+db.books.aggregate([
+  { 
+    $match: { year: { $gt: 2000 } } 
+  },
+  { 
+    $project: { _id: 0 , title : 1 , author : 1 , year: 1 } 
+  }
+]);
+
+db.books.aggregate([
+  { 
+    $unwind: "$genres" 
+  }
+]);
+
+
+db.books.aggregate([
+  {
+    $lookup: {
+      from: "logs",           
+      localField: "_id",     
+      foreignField: "book_id", 
+      as: "book_details"      
+    }
+  }
+]);
