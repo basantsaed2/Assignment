@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import path from "path";
 dotenv.config({
-  path: path.resolve("./src/config/.env"), // to make it relative for any device
+  path: path.resolve("./config/.env"), // to make it relative for any device
 });
 
 export const DB_NAME = process.env.DB_NAME;
@@ -10,5 +10,6 @@ export const PORT = process.env.PORT;
 
 export const ENC_KEY = process.env.ENC_KEY;
 export const SIG_KEY = process.env.SIG_KEY;
+export const JWT_SECRET = process.env.JWT_SECRET;
 
 export const FULL_URL = `${MONGODB_URI}/${DB_NAME}`;
