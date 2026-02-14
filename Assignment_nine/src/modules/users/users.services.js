@@ -1,9 +1,9 @@
 import { JWT_SECRET } from "../../../config/env.services.js";
 import { usersModel } from "../../database/models/users.model.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"; 
+import jwt from "jsonwebtoken";
 
-export const createUser = async (userData) => {
+export const CreateUser = async (userData) => {
   try {
     const { name, email, password, phone, age } = userData;
     const userExist = await usersModel.findOne({ email });
@@ -51,6 +51,78 @@ export const Login = async (userData) => {
     result.token = token;
 
     return { status: 200, message: "Login Successfullay", data: result };
+  } catch (error) {
+    return { status: 500, message: error.message };
+  }
+};
+
+export const UpdateUser = async (userId, userData) => {
+  try {
+    const { email, password, age, phone, name } = userData;
+
+    if (password) {
+      return { status: 400, message: "Password cannot be updated here" };
+    }
+
+    if (email) {
+      const emailExists = await usersModel.findOne({
+        email,
+        _id: { $ne: userId },
+      });
+      if (emailExists) {
+        return { status: 409, message: "Email already exists" };
+      }
+    }
+
+    const updatedUser = await usersModel.findByIdAndUpdate(
+      userId,
+      { email, name, phone, age },
+      { new: true, runValidators: true },
+    );
+
+    if (!updatedUser) {
+      return { status: 404, message: "User not found" };
+    }
+
+    return {
+      status: 200,
+      message: "User updated successfully",
+      data: updatedUser,
+    };
+  } catch (error) {
+    return { status: 500, message: error.message };
+  }
+};
+
+export const DeleteUser = async (userId) => {
+  try {
+    const deletedUser = await usersModel.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return { status: 404, message: "User not found" };
+    }
+
+    return {
+      status: 200,
+      message: "User deleted successfully",
+    };
+  } catch (error) {
+    return { status: 500, message: error.message };
+  }
+};
+
+export const GetUser = async (userId) => {
+  try {
+    const user = await usersModel.findOne({_id : userId});
+
+    if (!user) {
+      return { status: 404, message: "User not found" };
+    }
+
+    return {
+      status: 200,
+      data : user
+    };
   } catch (error) {
     return { status: 500, message: error.message };
   }
